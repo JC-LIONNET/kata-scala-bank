@@ -1,5 +1,5 @@
 package bank.domain
 
 case class Balance(
-                    amount: BigDecimal = BigDecimal(0)
+                    value: BigDecimal = BigDecimal(0)
                   )
