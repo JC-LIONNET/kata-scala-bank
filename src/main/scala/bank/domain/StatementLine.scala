@@ -1,3 +1,6 @@
 package bank.domain
 
-case class StatementLine()
+case class StatementLine(
+                        operation: Operation,
+                        balance: Balance
+                        )
