@@ -8,6 +8,6 @@ case class Statement(
   def addDeposit(balance: Balance, amount: Amount, timestamp: Instant): Statement = {
     val deposit: Operation = Operation(OperationType.DEPOSIT,  amount, timestamp)
     val depositStatementLine: StatementLine = StatementLine(deposit, balance)
-    copy(listStatementLines = List(depositStatementLine))
+    copy(listStatementLines = depositStatementLine :: listStatementLines)
   }
 }

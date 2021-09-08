@@ -119,4 +119,23 @@ class AccountSpec extends AnyFlatSpec {
 
     assertResult(expectedHistory, "The statement line should be the same")(accountWithDeposit.history)
   }
+
+  it should "Deposit 1000 and 500 then complete the account history with the operations" in {
+    //Given
+    val fixedInstant: Instant = Instant.now()
+    val clockFixed: Clock = Clock.fixed(fixedInstant, ZoneId.systemDefault())
+    val initAccount: Account = Account(clock = clockFixed)
+
+    //When
+    val accountWithDeposit: Account = initAccount.deposit(Amount(1000)).deposit(Amount(500))
+
+    //Then
+    val expectedOperation: Operation = Operation(OperationType.DEPOSIT, Amount(1000), fixedInstant)
+    val expectedOperation2: Operation = Operation(OperationType.DEPOSIT, Amount(500), fixedInstant)
+    val expectedStatementLine: StatementLine = StatementLine(expectedOperation, Balance(1000))
+    val expectedStatementLine2: StatementLine = StatementLine(expectedOperation2, Balance(1500))
+    val expectedHistory: Statement = Statement(List(expectedStatementLine2, expectedStatementLine))
+
+    assertResult(expectedHistory, "The statement lines should be the same")(accountWithDeposit.history)
+  }
 }
