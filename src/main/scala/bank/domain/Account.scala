@@ -1,7 +1,8 @@
 package bank.domain
 
 case class Account(
-                    balance: Balance = Balance()
+                    balance: Balance = Balance(),
+                    history: Statement = Statement()
                   ) {
   def deposit(amount: Amount): Account = {
     val newValue: BigDecimal = balance.value + amount.value

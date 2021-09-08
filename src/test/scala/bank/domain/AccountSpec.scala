@@ -88,4 +88,16 @@ class AccountSpec extends AnyFlatSpec {
     val expectedBalance: Balance = Balance(500)
     assertResult(expectedBalance, s"The value of the balance should be ${expectedBalance}")(accountWithDepositAndWithdrawal.balance)
   }
+
+  it should "Be initialized with empty list of StatementLine " in {
+    //Given
+    val initAccount: Account = Account()
+
+    //When
+    val actualStatement: Statement = initAccount.history
+
+    //Then
+    val expectedStatementLinesList: List[StatementLine] = List.empty
+    assertResult(expectedStatementLinesList, "The Statement should be initialized with empty list of StatementLine")(actualStatement.listStatementLines)
+  }
 }
