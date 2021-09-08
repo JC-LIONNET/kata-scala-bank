@@ -2,6 +2,8 @@ package bank.domain
 
 import org.scalatest.flatspec.AnyFlatSpec
 
+import java.time.{Clock, Instant, ZoneId}
+
 class AccountSpec extends AnyFlatSpec {
   behavior of "AccountSpec"
 
@@ -99,5 +101,22 @@ class AccountSpec extends AnyFlatSpec {
     //Then
     val expectedStatementLinesList: List[StatementLine] = List.empty
     assertResult(expectedStatementLinesList, "The Statement should be initialized with empty list of StatementLine")(actualStatement.listStatementLines)
+  }
+
+  it should "Deposit 1000 and then complete the account history with the operation" in {
+    //Given
+    val fixedInstant: Instant = Instant.now()
+    val clockFixed: Clock = Clock.fixed(fixedInstant, ZoneId.systemDefault())
+    val initAccount: Account = Account(clock = clockFixed)
+
+    //When
+    val accountWithDeposit: Account = initAccount.deposit(Amount(1000))
+
+    //Then
+    val expectedOperation: Operation = Operation(OperationType.DEPOSIT, Amount(1000), fixedInstant)
+    val expectedStatementLine: StatementLine = StatementLine(expectedOperation, Balance(1000))
+    val expectedHistory: Statement = Statement(List(expectedStatementLine))
+
+    assertResult(expectedHistory, "The statement line should be the same")(accountWithDeposit.history)
   }
 }
