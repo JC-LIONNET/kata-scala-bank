@@ -20,7 +20,7 @@ class AccountSpec extends AnyFlatSpec {
   }
 
   it should "Be initialized with 1000" in {
-    val iniAmount : Amount = Amount(1000)
+    val iniAmount: Amount = Amount(1000)
     val actualAccount: Account = Account(amount = iniAmount)
 
     //When
@@ -154,5 +154,24 @@ class AccountSpec extends AnyFlatSpec {
     val expectedHistory: Statement = Statement(List(expectedStatementLine))
 
     assertResult(expectedHistory, "The statement line should be the same")(accountWithWithdrawal.history)
+  }
+
+  it should "Withdrawal 500 and 400 then complete the account history with the operations" in {
+    //Given
+    val fixedInstant: Instant = Instant.now()
+    val clockFixed: Clock = Clock.fixed(fixedInstant, ZoneId.systemDefault())
+    val initAccount: Account = Account(clock = clockFixed)
+
+    //When
+    val accountWithWithdrawals: Account = initAccount.withdrawal(Amount(500)).withdrawal(Amount(400))
+
+    //Then
+    val expectedOperation: Operation = Operation(OperationType.WITHDRAWAL, Amount(500), fixedInstant)
+    val expectedOperation2: Operation = Operation(OperationType.WITHDRAWAL, Amount(400), fixedInstant)
+    val expectedStatementLine: StatementLine = StatementLine(expectedOperation, Balance(-500))
+    val expectedStatementLine2: StatementLine = StatementLine(expectedOperation2, Balance(-900))
+    val expectedHistory: Statement = Statement(List(expectedStatementLine2, expectedStatementLine))
+
+    assertResult(expectedHistory, "The statement lines should be the same")(accountWithWithdrawals.history)
   }
 }

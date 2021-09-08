@@ -14,6 +14,6 @@ case class Statement(
   def addWithdrawal(balance: Balance, amount: Amount, timestamp: Instant): Statement = {
     val withdrawal: Operation = Operation(OperationType.WITHDRAWAL, amount, timestamp)
     val withdrawalStatementLine: StatementLine = StatementLine(withdrawal, balance)
-    copy(listStatementLines = List(withdrawalStatementLine))
+    copy(listStatementLines = withdrawalStatementLine :: listStatementLines)
   }
 }
