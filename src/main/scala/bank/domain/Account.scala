@@ -9,7 +9,8 @@ case class Account(
   }
 
   def withdrawal(amount: Amount): Account = {
-    copy(balance = Balance(-amount.value))
+    val newValue: BigDecimal = balance.value - amount.value
+    copy(balance = Balance(newValue))
   }
 }
 
