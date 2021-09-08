@@ -76,4 +76,16 @@ class AccountSpec extends AnyFlatSpec {
     val expectedBalance: Balance = Balance(-1500)
     assertResult(expectedBalance, s"The value of the balance should be ${expectedBalance}")(accountWithWithdrawals.balance)
   }
+
+  it should "Deposit 1000 and then withdrawal 500 from the account" in {
+    //Given
+    val initAccount: Account = Account()
+
+    //When
+    val accountWithDepositAndWithdrawal: Account = initAccount.deposit(Amount(1000)).withdrawal(Amount(500))
+
+    //Then
+    val expectedBalance: Balance = Balance(500)
+    assertResult(expectedBalance, s"The value of the balance should be ${expectedBalance}")(accountWithDepositAndWithdrawal.balance)
+  }
 }
