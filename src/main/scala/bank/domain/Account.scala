@@ -20,6 +20,8 @@ case class Account(
     val updateHistory: Statement = history.addWithdrawal(newBalance, amount, clock.instant())
     copy(balance = newBalance, history = updateHistory)
   }
+
+  def print(printer: StatementPrinter): Unit = printer.print(history)
 }
 
 object Account {
