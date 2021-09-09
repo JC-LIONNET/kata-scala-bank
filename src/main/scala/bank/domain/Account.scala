@@ -8,8 +8,7 @@ case class Account(
                     clock: Clock = Clock.systemDefaultZone()
                   ) {
   def deposit(amount: Amount): Account = {
-    val newValue: BigDecimal = balance.value + amount.value
-    val newBalance: Balance = Balance(newValue)
+    val newBalance: Balance = balance.add(amount)
     val updatedHistory: Statement = history.addDeposit(newBalance,amount,clock.instant())
     copy(balance = newBalance, history = updatedHistory)
   }
