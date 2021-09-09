@@ -1,6 +1,8 @@
 package bank.domain
 
-import java.time.Clock
+import bank.domain.OperationType.OperationType
+
+import java.time.{Clock, Instant}
 
 case class Account(
                     balance: Balance = Balance(),
@@ -9,13 +11,16 @@ case class Account(
                   ) {
   def deposit(amount: Amount): Account = {
     val newBalance: Balance = balance.add(amount)
-    val updatedHistory: Statement = history.addDeposit(newBalance,amount,clock.instant())
-    copy(balance = newBalance, history = updatedHistory)
+    updateStatement(OperationType.DEPOSIT,newBalance,amount,clock.instant())
   }
 
   def withdrawal(amount: Amount): Account = {
     val newBalance: Balance = balance.subtract(amount)
-    val updateHistory: Statement = history.addWithdrawal(newBalance, amount, clock.instant())
+    updateStatement(OperationType.WITHDRAWAL,newBalance, amount, clock.instant())
+  }
+
+  private def updateStatement(operationType: OperationType, newBalance: Balance, amount: Amount, instant: Instant): Account = {
+    val updateHistory: Statement = history.addOperation(operationType, newBalance, amount, instant)
     copy(balance = newBalance, history = updateHistory)
   }
 
