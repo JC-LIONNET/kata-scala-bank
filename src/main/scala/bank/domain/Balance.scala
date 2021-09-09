@@ -5,4 +5,5 @@ case class Balance(
                   ){
 
   def add(amount: Amount): Balance = copy(value = value + amount.value )
+  def subtract(amount: Amount): Balance = copy(value = value - amount.value)
 }

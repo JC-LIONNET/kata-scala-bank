@@ -14,8 +14,7 @@ case class Account(
   }
 
   def withdrawal(amount: Amount): Account = {
-    val newValue: BigDecimal = balance.value - amount.value
-    val newBalance: Balance = Balance(newValue)
+    val newBalance: Balance = balance.subtract(amount)
     val updateHistory: Statement = history.addWithdrawal(newBalance, amount, clock.instant())
     copy(balance = newBalance, history = updateHistory)
   }
