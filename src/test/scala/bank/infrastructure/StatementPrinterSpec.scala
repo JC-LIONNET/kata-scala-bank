@@ -5,7 +5,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 
 import java.time.{Clock, Instant, ZoneId}
 
-class StatementPrinter extends AnyFlatSpec{
+class StatementPrinterSpec extends AnyFlatSpec{
 
   behavior of "StatementPrinter"
 
